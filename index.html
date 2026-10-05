@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>食物アレルギー認定ドリル</title>
+<meta name="description" content="食物アレルギー分野管理栄養士・栄養士 認定試験の練習問題">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: one narrow study column, like a clipboard of exam sheets; summary first, then modes, then lectures */
+:root {
+  --bg: #F2F4EF;
+  --surface: #FFFFFF;
+  --ink: #1B2621;
+  --muted: #5A6A62;
+  --line: #D6DED7;
+  --accent: #1D6A55;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E0EEE8;
+  --yolk: #D99A1E;
+  --yolk-soft: #FBF0D6;
+  --ok: #2B7A4B;
+  --ok-soft: #E1F1E6;
+  --ng: #B43F28;
+  --ng-soft: #F7E2DC;
+  --font-display: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111814; --surface: #19221D; --ink: #E4EBE6; --muted: #98A99F; --line: #2C3832;
+    --accent: #5DBE9E; --accent-ink: #0D1611; --accent-soft: #1C352C;
+    --yolk: #E9B54E; --yolk-soft: #3A2F17;
+    --ok: #6BC690; --ok-soft: #1B3325; --ng: #EE8B76; --ng-soft: #3B221C;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111814; --surface: #19221D; --ink: #E4EBE6; --muted: #98A99F; --line: #2C3832;
+  --accent: #5DBE9E; --accent-ink: #0D1611; --accent-soft: #1C352C;
+  --yolk: #E9B54E; --yolk-soft: #3A2F17;
+  --ok: #6BC690; --ok-soft: #1B3325; --ng: #EE8B76; --ng-soft: #3B221C;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); }
+body { font-family: var(--font-body); font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 720px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.35; }
+button { font: inherit; color: inherit; }
+button:focus-visible, .choice:focus-visible { outline: 3px solid var(--yolk); outline-offset: 2px; }
+.num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+
+/* ---------- header ---------- */
+.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.brand-mark { width: 40px; height: 40px; flex: none; }
+.brand h1 { font-size: 1.25rem; font-weight: 900; letter-spacing: .02em; }
+.brand p { margin: 0; color: var(--muted); font-size: .8rem; letter-spacing: .04em; }
+
+/* ---------- exam strip ---------- */
+.exam { background: var(--accent); color: var(--accent-ink); border-radius: var(--radius); padding: 18px 20px; display: grid; grid-template-columns: auto 1fr; gap: 6px 20px; align-items: center; }
+.exam .days { grid-row: span 2; text-align: center; padding-right: 20px; border-right: 1px solid color-mix(in srgb, var(--accent-ink) 30%, transparent); }
+.exam .days b { display: block; font-family: var(--font-num); font-size: 2.6rem; line-height: 1; font-weight: 600; }
+.exam .days span { font-size: .75rem; letter-spacing: .08em; }
+.exam .label { font-size: .75rem; letter-spacing: .1em; opacity: .85; }
+.exam .when { font-weight: 700; font-size: 1rem; line-height: 1.5; }
+.exam .when small { display: block; font-weight: 400; font-size: .8rem; opacity: .9; }
+
+/* ---------- stats ---------- */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; min-width: 0; }
+.stat .k { font-size: .72rem; color: var(--muted); letter-spacing: .06em; }
+.stat .v { font-family: var(--font-num); font-size: 1.5rem; font-weight: 600; line-height: 1.3; }
+.stat .v small { font-size: .8rem; color: var(--muted); margin-left: 2px; }
+
+/* ---------- section titles ---------- */
+.sec { margin-top: 28px; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.sec-head h2 { font-size: 1.05rem; }
+.sec-head .hint { font-size: .78rem; color: var(--muted); }
+
+/* ---------- modes ---------- */
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mode { text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; transition: border-color .15s, transform .15s; min-width: 0; }
+.mode:hover { border-color: var(--accent); }
+.mode:active { transform: translateY(1px); }
+.mode .t { font-weight: 700; font-size: 1rem; }
+.mode .d { font-size: .8rem; color: var(--muted); line-height: 1.55; }
+.mode.primary { grid-column: 1 / -1; background: var(--yolk-soft); border-color: color-mix(in srgb, var(--yolk) 55%, var(--line)); flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; }
+.mode.primary .t { font-size: 1.1rem; }
+.mode.primary .go { flex: none; background: var(--ink); color: var(--bg); border-radius: 999px; padding: 6px 14px; font-size: .85rem; font-weight: 700; }
+.mode[disabled] { opacity: .45; cursor: not-allowed; }
+
+/* ---------- lectures ---------- */
+.lectures { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.lec { width: 100%; display: grid; grid-template-columns: 2.4rem 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 16px; background: none; border: 0; border-top: 1px solid var(--line); text-align: left; cursor: pointer; }
+.lec:first-child { border-top: 0; }
+.lec:hover { background: var(--accent-soft); }
+.lec .n { font-family: var(--font-num); font-size: .8rem; color: var(--muted); grid-row: span 2; }
+.lec .name { font-weight: 500; font-size: .95rem; line-height: 1.45; min-width: 0; }
+.lec .score { font-family: var(--font-num); font-size: .8rem; color: var(--muted); text-align: right; white-space: nowrap; }
+.bar { grid-column: 2 / -1; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; display: flex; }
+.bar i { display: block; height: 100%; }
+.bar .c { background: var(--ok); }
+.bar .w { background: var(--ng); opacity: .75; }
+
+.install { margin-top: 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line)); border-radius: 12px; padding: 12px 16px; }
+.install > div { min-width: 0; flex: 1 1 14rem; }
+.install b { display: block; font-size: .95rem; }
+.install span { display: block; font-size: .8rem; color: var(--muted); line-height: 1.6; }
+.install .btn { flex: none; padding: 8px 16px; font-size: .88rem; }
+
+.foot { margin-top: 28px; font-size: .78rem; color: var(--muted); line-height: 1.7; }
+.foot button { background: none; border: 0; padding: 0; color: var(--ng); text-decoration: underline; cursor: pointer; font-size: .78rem; }
+.confirm { display: inline-flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+/* ---------- quiz ---------- */
+.qtop { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 10px 8px; margin-inline: -16px; padding-inline: 16px; }
+.qtop-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.back { flex: none; white-space: nowrap; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: .82rem; cursor: pointer; color: var(--muted); }
+.back:hover { color: var(--ink); border-color: var(--ink); }
+.pos { min-width: 0; display: flex; gap: 8px; align-items: baseline; font-size: .85rem; }
+.pos .ttl { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.pos .cnt { flex: none; font-family: var(--font-num); font-size: .9rem; }
+.timer { flex: none; white-space: nowrap; font-family: var(--font-num); font-size: .9rem; padding: 3px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+.timer.low { color: var(--ng); border-color: var(--ng); }
+.prog { height: 4px; background: var(--line); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.prog i { display: block; height: 100%; background: var(--accent); transition: width .25s; }
+
+.qcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; margin-top: 8px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.tag { font-size: .72rem; letter-spacing: .04em; padding: 2px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+.tag.two { background: var(--yolk-soft); color: color-mix(in srgb, var(--yolk) 70%, var(--ink)); }
+.tag.case { background: var(--ink); color: var(--bg); }
+.casebox { background: var(--bg); border-left: 4px solid var(--yolk); border-radius: 0 10px 10px 0; padding: 12px 14px; margin-bottom: 14px; font-size: .9rem; white-space: pre-line; line-height: 1.8; }
+.casebox b { display: block; font-family: var(--font-display); font-size: .82rem; letter-spacing: .08em; color: var(--muted); margin-bottom: 2px; }
+.stem { font-size: 1.05rem; font-weight: 500; line-height: 1.8; margin: 0 0 16px; }
+.stem .qn { font-weight: 700; color: var(--accent); margin-right: 6px; }
+.choices { display: flex; flex-direction: column; gap: 8px; }
+.choice { display: grid; grid-template-columns: 2rem 1fr auto; gap: 10px; align-items: start; text-align: left; background: var(--surface); border: 1.5px solid var(--line); border-radius: 10px; padding: 11px 12px; cursor: pointer; line-height: 1.6; transition: border-color .12s, background .12s; }
+.choice:hover:not([disabled]) { border-color: var(--accent); }
+.choice .no { font-family: var(--font-num); font-weight: 600; width: 1.7rem; height: 1.7rem; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid var(--line); font-size: .85rem; }
+.choice .txt { min-width: 0; padding-top: 1px; }
+.choice .mk { font-weight: 700; font-size: .8rem; padding-top: 3px; }
+.choice.sel { border-color: var(--accent); background: var(--accent-soft); }
+.choice.sel .no { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.choice[disabled] { cursor: default; }
+.choice.right { border-color: var(--ok); background: var(--ok-soft); }
+.choice.right .no { background: var(--ok); border-color: var(--ok); color: var(--surface); }
+.choice.right .mk { color: var(--ok); }
+.choice.wrong { border-color: var(--ng); background: var(--ng-soft); }
+.choice.wrong .no { background: var(--ng); border-color: var(--ng); color: var(--surface); }
+.choice.wrong .mk { color: var(--ng); }
+
+.actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; flex-wrap: wrap; }
+.btn { border: 0; border-radius: 10px; padding: 11px 20px; font-weight: 700; cursor: pointer; background: var(--accent); color: var(--accent-ink); font-size: .95rem; }
+.btn:hover { filter: brightness(1.08); }
+.btn[disabled] { opacity: .4; cursor: not-allowed; filter: none; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.kbd { font-size: .72rem; color: var(--muted); margin-right: auto; align-self: center; }
+
+.verdict { margin-top: 16px; border-radius: 12px; padding: 14px 16px; }
+.verdict.ok { background: var(--ok-soft); }
+.verdict.ng { background: var(--ng-soft); }
+.verdict h3 { font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+.verdict.ok h3 { color: var(--ok); }
+.verdict.ng h3 { color: var(--ng); }
+.verdict .ans { font-size: .88rem; margin: 4px 0 6px; }
+.verdict p { margin: 0; font-size: .9rem; line-height: 1.8; }
+.verdict .src { margin-top: 8px; font-size: .75rem; color: var(--muted); }
+.verdict details summary { cursor: pointer; font-size: .85rem; color: var(--ok); margin-top: 4px; }
+.verdict details p { margin-top: 6px; }
+.verdict .cmp { display: grid; gap: 6px; margin: 8px 0 10px; font-size: .88rem; }
+.verdict .cmp div { display: grid; grid-template-columns: 6.5rem 1fr; gap: 8px; }
+.verdict .cmp span { color: var(--muted); font-size: .78rem; padding-top: 2px; }
+.verdict .cmp .you { color: var(--ng); font-weight: 500; text-decoration: line-through; text-decoration-thickness: 1px; }
+.verdict .cmp .cor { color: var(--ok); }
+.verdict p strong { color: var(--ng); }
+
+/* ---------- results ---------- */
+.result-hero { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 20px; display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; }
+.ring { width: 108px; height: 108px; }
+.result-hero h2 { font-size: 1.2rem; }
+.result-hero .sub { color: var(--muted); font-size: .85rem; margin-top: 4px; }
+.breakdown { margin-top: 14px; }
+.wronglist { display: flex; flex-direction: column; gap: 10px; }
+.wl { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.wl .q { font-weight: 500; font-size: .92rem; }
+.wl .row { font-size: .85rem; margin-top: 6px; display: grid; grid-template-columns: 4.2rem 1fr; gap: 6px; }
+.wl .row span:first-child { color: var(--muted); font-size: .78rem; padding-top: 2px; }
+.wl .row.you span:last-child { color: var(--ng); }
+.wl .row.cor span:last-child { color: var(--ok); font-weight: 500; }
+.wl .ex { margin-top: 8px; font-size: .85rem; color: var(--muted); line-height: 1.75; }
+.empty { text-align: center; color: var(--muted); padding: 20px; font-size: .9rem; }
+
+@media (max-width: 520px) {
+  .modes { grid-template-columns: 1fr; }
+  .exam { grid-template-columns: 1fr; }
+  .exam .days { grid-row: auto; border-right: 0; padding-right: 0; display: flex; align-items: baseline; gap: 8px; justify-content: flex-start; }
+  .exam .days b { font-size: 2.2rem; }
+  .stat .v { font-size: 1.25rem; }
+  .result-hero { grid-template-columns: 1fr; justify-items: start; }
+  .qcard { padding: 16px; }
+  .kbd { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1D6A55">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="アレルギードリル">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script src="questions.js"></script>
+<script>
+(function () {
+  "use strict";
+  var Q = window.QUESTIONS, L = window.LECTURES, CASES = window.CASES;
+  Q.forEach(function (q, i) {
+    // stable id: lecture + order within lecture
+    var n = Q.slice(0, i).filter(function (x) { return x.l === q.l; }).length + 1;
+    q.id = "L" + q.l + "-" + n + (q.case ? "-" + q.case : "");
+  });
+
+  var EXAM = new Date(2026, 9, 25, 14, 0, 0);
+  var MOCK_N = 50, MOCK_MIN = 60, RAND_N = 40;
+  var KEY = "fa-drill-v3";
+  var app = document.getElementById("app");
+
+  // ---------- storage (per-viewer convenience only) ----------
+  function load() {
+    try { var s = JSON.parse(localStorage.getItem(KEY) || "{}"); return s && s.stats ? s : { stats: {} }; }
+    catch (e) { return { stats: {} }; }
+  }
+  var store = load();
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+  function record(q, ok) {
+    var s = store.stats[q.id] || { n: 0, c: 0 };
+    s.n++; if (ok) s.c++; s.last = ok ? 1 : 0;
+    store.stats[q.id] = s; save();
+  }
+
+  // ---------- helpers ----------
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function typeLabel(q) { return q.t === "d" ? "2つ選べ" : "1つ選べ"; }
+  function lecStats(l) {
+    var qs = Q.filter(function (q) { return q.l === l; }), seen = 0, cor = 0;
+    qs.forEach(function (q) { var s = store.stats[q.id]; if (s) { seen++; if (s.last) cor++; } });
+    return { total: qs.length, seen: seen, cor: cor };
+  }
+  function overall() {
+    var seen = 0, cor = 0, wrong = 0;
+    Q.forEach(function (q) { var s = store.stats[q.id]; if (s) { seen++; if (s.last) cor++; else wrong++; } });
+    return { seen: seen, cor: cor, wrong: wrong };
+  }
+  function daysLeft() {
+    var now = new Date(), a = new Date(now.getFullYear(), now.getMonth(), now.getDate()), b = new Date(EXAM.getFullYear(), EXAM.getMonth(), EXAM.getDate());
+    return Math.round((b - a) / 86400000);
+  }
+
+  // ---------- session ----------
+  var S = null, tick = null;
+  function makeItems(list, four) {
+    return list.map(function (q) {
+      var order = [0, 1, 2, 3, 4];
+      if (four) {
+        // 4択: 正答1つ + 誤答から3つをランダムに残す
+        var wrong = shuffle(order.filter(function (ci) { return q.a.indexOf(ci) < 0; })).slice(0, 4 - q.a.length);
+        order = q.a.concat(wrong);
+      }
+      return { q: q, order: shuffle(order), pick: null };
+    });
+  }
+  function groupCases(list) {
+    // keep each case's questions together, after single questions, like the real exam
+    var singles = list.filter(function (q) { return !q.case; }), byCase = {};
+    list.forEach(function (q) { if (q.case) (byCase[q.case] = byCase[q.case] || []).push(q); });
+    var out = singles;
+    Object.keys(byCase).sort().forEach(function (k) { out = out.concat(byCase[k]); });
+    return out;
+  }
+  function start(mode, arg) {
+    var list, title, mock = false;
+    if (mode === "mock") {
+      var caseKeys = shuffle(Object.keys(CASES)).slice(0, 3), caseQs = Q.filter(function (q) { return caseKeys.indexOf(q.case) >= 0; });
+      var singles = shuffle(Q.filter(function (q) { return !q.case; })).slice(0, MOCK_N - caseQs.length);
+      list = groupCases(singles.concat(caseQs)); title = "模擬試験"; mock = true;
+    } else if (mode === "rand") {
+      list = shuffle(Q.filter(function (q) { return q.t === "s"; })).slice(0, RAND_N); title = "ランダム4択";
+    } else if (mode === "lec") {
+      list = groupCases(shuffle(Q.filter(function (q) { return q.l === arg; }))); title = "講義" + arg + "　" + L[arg];
+    } else if (mode === "case") {
+      list = groupCases(Q.filter(function (q) { return q.case; })); title = "事例問題";
+    } else if (mode === "review") {
+      list = shuffle(Q.filter(function (q) { var s = store.stats[q.id]; return s && !s.last; })); title = "間違えた問題";
+    } else if (mode === "retry") {
+      list = arg; title = "解き直し";
+    }
+    if (!list.length) return;
+    var four = mode === "rand";
+    S = { mode: mode, title: title, mock: mock, four: four, items: makeItems(list, four), i: 0, sel: [], shown: false, t0: Date.now(), limit: mock ? MOCK_MIN * 60 : 0 };
+    clearInterval(tick);
+    if (mock) tick = setInterval(updateTimer, 1000);
+    renderQuiz();
+    window.scrollTo(0, 0);
+  }
+  function remaining() { return Math.max(0, S.limit - Math.floor((Date.now() - S.t0) / 1000)); }
+  function fmt(sec) { var m = Math.floor(sec / 60), s = sec % 60; return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s; }
+  function updateTimer() {
+    if (!S || !S.mock) return;
+    var r = remaining(), el = document.getElementById("timer");
+    if (el) { el.textContent = "残り " + fmt(r); el.classList.toggle("low", r <= 300); }
+    if (r <= 0) finish();
+  }
+
+  // ---------- home ----------
+  function renderHome() {
+    clearInterval(tick); S = null;
+    var o = overall(), d = daysLeft(), rate = o.seen ? Math.round(o.cor / o.seen * 100) : 0;
+    var examHtml = d >= 0
+      ? '<div class="days"><b>' + d + '</b><span>' + (d === 0 ? "本日" : "日後") + '</span></div>'
+      : '<div class="days"><b>—</b><span>終了</span></div>';
+    var lecHtml = Object.keys(L).map(function (k) {
+      var l = +k, s = lecStats(l), cw = s.total ? s.cor / s.total * 100 : 0, ww = s.total ? (s.seen - s.cor) / s.total * 100 : 0;
+      return '<button class="lec" data-lec="' + l + '"><span class="n">講義' + l + '</span><span class="name">' + esc(L[l]) + '</span>' +
+        '<span class="score">' + s.cor + ' / ' + s.total + '</span>' +
+        '<span class="bar" aria-hidden="true"><i class="c" style="width:' + cw + '%"></i><i class="w" style="width:' + ww + '%"></i></span></button>';
+    }).join("");
+    var caseN = Q.filter(function (q) { return q.case; }).length;
+    app.innerHTML =
+      '<header class="brand">' + markSvg() + '<div><h1>食物アレルギー認定ドリル</h1><p>食物アレルギー分野 管理栄養士・栄養士 認定試験対策</p></div></header>' +
+      '<section class="exam" aria-label="筆記試験の日程">' + examHtml +
+        '<div class="label">筆記試験</div>' +
+        '<div class="when">2026年10月25日(日) 14:00〜15:00<small>オンライン ・ 50問 ・ 60分 ・ 単純択一／2選択／事例問題</small></div>' +
+      '</section>' +
+      '<div class="stats">' +
+        '<div class="stat"><div class="k">解いた問題</div><div class="v">' + o.seen + '<small>/ ' + Q.length + '</small></div></div>' +
+        '<div class="stat"><div class="k">直近の正答率</div><div class="v">' + (o.seen ? rate : "—") + '<small>' + (o.seen ? "%" : "") + '</small></div></div>' +
+        '<div class="stat"><div class="k">要復習</div><div class="v">' + o.wrong + '<small>問</small></div></div>' +
+      '</div>' + installHtml() +
+      '<section class="sec"><div class="sec-head"><h2>演習モード</h2></div><div class="modes">' +
+        '<button class="mode primary" data-mode="mock"><span><span class="t">模擬試験 50問</span><br><span class="d">本番と同じ60分。解説は最後にまとめて表示します。</span></span><span class="go">開始</span></button>' +
+        '<button class="mode" data-mode="rand"><span class="t">ランダム40問・4択</span><span class="d">全講義から出題。間違えたらその場で解説。</span></button>' +
+        '<button class="mode" data-mode="review"' + (o.wrong ? "" : " disabled") + '><span class="t">間違えた問題 ' + o.wrong + '問</span><span class="d">直近で不正解だった問題だけを解き直します。</span></button>' +
+        '<button class="mode" data-mode="case"><span class="t">事例問題 ' + caseN + '問</span><span class="d">状況文を読んで答える形式。</span></button>' +
+      '</div></section>' +
+      '<section class="sec"><div class="sec-head"><h2>講義別に解く</h2><span class="hint">正解数 / 問題数</span></div><div class="lectures">' + lecHtml + '</div></section>' +
+      '<p class="foot">問題は2026年度認定研修の講義資料(講義1〜10)をもとに作成した練習用です。実際の試験問題ではありません。記録はこのブラウザにのみ保存されます。<br>' +
+      '<span id="resetArea"><button id="reset">学習記録をリセット</button></span></p>';
+    app.querySelectorAll("[data-mode]").forEach(function (b) { b.onclick = function () { start(b.dataset.mode); }; });
+    app.querySelectorAll("[data-lec]").forEach(function (b) { b.onclick = function () { start("lec", +b.dataset.lec); }; });
+    var ib = document.getElementById("installBtn");
+    if (ib) ib.onclick = function () {
+      var p = pwa.deferred; if (!p) return;
+      pwa.deferred = null;
+      p.prompt();
+      p.userChoice.then(function () { renderHome(); }, function () { renderHome(); });
+    };
+    document.getElementById("reset").onclick = function () {
+      document.getElementById("resetArea").innerHTML = '<span class="confirm">記録をすべて消しますか？ <button id="resetYes">消す</button> <button id="resetNo" style="color:var(--muted)">やめる</button></span>';
+      document.getElementById("resetYes").onclick = function () { store = { stats: {} }; save(); renderHome(); };
+      document.getElementById("resetNo").onclick = renderHome;
+    };
+  }
+  // ---------- PWA (only when served with a manifest; the artifact viewer has none) ----------
+  var pwa = { deferred: null, enabled: !!document.querySelector('link[rel="manifest"]') };
+  function standalone() {
+    try { return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true; }
+    catch (e) { return false; }
+  }
+  function installHtml() {
+    if (!pwa.enabled || standalone()) return "";
+    if (pwa.deferred) {
+      return '<div class="install"><div><b>アプリとしてインストール</b><span>ホーム画面から起動でき、オフラインでも解けます。</span></div>' +
+        '<button class="btn" id="installBtn">インストール</button></div>';
+    }
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+      return '<div class="install"><div><b>ホーム画面に追加できます</b><span>Safariの共有ボタンから「ホーム画面に追加」を選ぶと、アプリとして使えます。</span></div></div>';
+    }
+    return "";
+  }
+  if (pwa.enabled) {
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault(); pwa.deferred = e;
+      if (!S) renderHome();
+    });
+    window.addEventListener("appinstalled", function () { pwa.deferred = null; if (!S) renderHome(); });
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function () {});
+      });
+    }
+  }
+
+  function markSvg() {
+    // egg + check mark: allergen identified, handled safely
+    return '<svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4c-7 0-13 10-13 19a13 13 0 0 0 26 0C33 14 27 4 20 4z" fill="var(--yolk-soft)" stroke="var(--yolk)" stroke-width="2"/><path d="M13.5 23.5l4.5 4.5 9-10" fill="none" stroke="var(--accent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  // ---------- quiz ----------
+  function renderQuiz() {
+    var it = S.items[S.i], q = it.q, n = S.items.length, need = q.t === "d" ? 2 : 1;
+    var caseHtml = q.case ? '<div class="casebox"><b>事例' + q.case + '</b>' + esc(CASES[q.case]) + '</div>' : "";
+    var chHtml = it.order.map(function (ci, k) {
+      var cls = "choice", mk = "";
+      if (S.shown) {
+        var isAns = q.a.indexOf(ci) >= 0, picked = S.sel.indexOf(ci) >= 0;
+        if (isAns) { cls += " right"; mk = picked ? "正解" : "正答"; }
+        else if (picked) { cls += " wrong"; mk = "誤り"; }
+      } else if (S.sel.indexOf(ci) >= 0) cls += " sel";
+      return '<button class="' + cls + '" data-ci="' + ci + '"' + (S.shown ? " disabled" : "") + '><span class="no">' + (k + 1) + '</span><span class="txt">' + esc(q.c[ci]) + '</span><span class="mk">' + mk + '</span></button>';
+    }).join("");
+    var verdict = "";
+    if (S.shown) {
+      var ok = isCorrect(q, S.sel);
+      var ansNos = it.order.map(function (ci, k) { return q.a.indexOf(ci) >= 0 ? (k + 1) : null; }).filter(Boolean).join("・");
+      var src = '<div class="src">出典：講義' + q.l + '「' + esc(L[q.l]) + '」</div>';
+      if (S.four && ok) {
+        verdict = '<div class="verdict ok" role="status"><h3>○ 正解</h3>' +
+          '<details><summary>解説を見る</summary><p>' + esc(q.e) + '</p>' + src + '</details></div>';
+      } else if (S.four) {
+        var yourTxt = S.sel.map(function (ci) { return q.c[ci]; }).join(" ／ ");
+        var ansTxt = q.a.map(function (ci) { return q.c[ci]; }).join(" ／ ");
+        verdict = '<div class="verdict ng" role="status"><h3>× 不正解</h3>' +
+          '<div class="cmp"><div><span>あなたの解答</span><b class="you">' + esc(yourTxt) + '</b></div>' +
+          '<div><span>正答(' + ansNos + ')</span><b class="cor">' + esc(ansTxt) + '</b></div></div>' +
+          '<p><strong>解説</strong>　' + esc(q.e) + '</p>' + src + '</div>';
+      } else {
+        verdict = '<div class="verdict ' + (ok ? "ok" : "ng") + '" role="status"><h3>' + (ok ? "○ 正解" : "× 不正解") + '</h3>' +
+          '<div class="ans">正答：' + ansNos + '</div><p>' + esc(q.e) + '</p>' + src + '</div>';
+      }
+    }
+    var last = S.i === n - 1;
+    var btn = S.mock
+      ? '<button class="btn" id="next"' + (S.sel.length === need ? "" : " disabled") + '>' + (last ? "解答を終了して採点" : "次へ") + '</button>'
+      : (S.shown
+        ? '<button class="btn" id="next">' + (last ? "結果を見る" : "次の問題") + '</button>'
+        : '<button class="btn" id="submit"' + (S.sel.length === need ? "" : " disabled") + '>解答する</button>');
+    app.innerHTML =
+      '<div class="qtop"><div class="qtop-row"><button class="back" id="quit">← ' + (S.mock ? "中断" : "ホーム") + '</button>' +
+      '<span class="pos"><span class="ttl">' + esc(S.title) + '</span><span class="cnt"><b>' + (S.i + 1) + '</b> / ' + n + '</span></span>' +
+      (S.mock ? '<span class="timer" id="timer">残り ' + fmt(remaining()) + '</span>' : '<span></span>') + '</div>' +
+      '<div class="prog"><i style="width:' + ((S.i + (S.shown ? 1 : 0)) / n * 100) + '%"></i></div></div>' +
+      '<article class="qcard"><div class="tags"><span class="tag">講義' + q.l + ' ' + esc(L[q.l]) + '</span>' +
+      (q.case ? '<span class="tag case">事例問題</span>' : '') + '<span class="tag' + (q.t === "d" ? " two" : "") + '">' + typeLabel(q) + '</span></div>' +
+      caseHtml + '<p class="stem"><span class="qn">問' + (S.i + 1) + '</span>' + esc(q.q) + '</p>' +
+      '<div class="choices">' + chHtml + '</div>' + verdict +
+      '<div class="actions"><span class="kbd">キー操作：1〜' + it.order.length + 'で選択・Enterで決定</span>' + btn + '</div></article>';
+
+    app.querySelectorAll(".choice").forEach(function (b) { b.onclick = function () { toggle(+b.dataset.ci); }; });
+    var sb = document.getElementById("submit"); if (sb) sb.onclick = submit;
+    var nb = document.getElementById("next"); if (nb) nb.onclick = next;
+    document.getElementById("quit").onclick = function () {
+      if (S.mock && S.items.some(function (x) { return x.pick; })) { finish(); } else { renderHome(); window.scrollTo(0, 0); }
+    };
+  }
+  function isCorrect(q, sel) { return sel.length === q.a.length && q.a.every(function (a) { return sel.indexOf(a) >= 0; }); }
+  function toggle(ci) {
+    if (S.shown) return;
+    var q = S.items[S.i].q, need = q.t === "d" ? 2 : 1, k = S.sel.indexOf(ci);
+    if (k >= 0) S.sel.splice(k, 1);
+    else if (need === 1) S.sel = [ci];
+    else { if (S.sel.length >= 2) S.sel.shift(); S.sel.push(ci); }
+    renderQuiz();
+  }
+  function submit() {
+    var it = S.items[S.i], need = it.q.t === "d" ? 2 : 1;
+    if (S.sel.length !== need) return;
+    it.pick = S.sel.slice(); S.shown = true;
+    record(it.q, isCorrect(it.q, it.pick));
+    renderQuiz();
+  }
+  function next() {
+    var it = S.items[S.i];
+    if (S.mock) {
+      var need = it.q.t === "d" ? 2 : 1; if (S.sel.length !== need) return;
+      it.pick = S.sel.slice(); record(it.q, isCorrect(it.q, it.pick));
+    }
+    if (S.i === S.items.length - 1) { finish(); return; }
+    S.i++; S.sel = []; S.shown = false; renderQuiz(); window.scrollTo(0, 0);
+  }
+
+  // ---------- results ----------
+  function finish() {
+    clearInterval(tick);
+    var items = S.items, answered = items.filter(function (x) { return x.pick; }), total = items.length;
+    var cor = items.filter(function (x) { return x.pick && isCorrect(x.q, x.pick); }).length;
+    var pct = total ? Math.round(cor / total * 100) : 0;
+    var elapsed = Math.floor((Date.now() - S.t0) / 1000);
+    var byLec = {};
+    items.forEach(function (x) { var b = byLec[x.q.l] = byLec[x.q.l] || { n: 0, c: 0 }; b.n++; if (x.pick && isCorrect(x.q, x.pick)) b.c++; });
+    var bdHtml = Object.keys(byLec).sort(function (a, b) { return a - b; }).map(function (k) {
+      var b = byLec[k], cw = b.c / b.n * 100, ww = 100 - cw;
+      return '<div class="lec" style="cursor:default"><span class="n">講義' + k + '</span><span class="name">' + esc(L[k]) + '</span><span class="score">' + b.c + ' / ' + b.n + '</span>' +
+        '<span class="bar" aria-hidden="true"><i class="c" style="width:' + cw + '%"></i><i class="w" style="width:' + ww + '%"></i></span></div>';
+    }).join("");
+    var wrong = items.filter(function (x) { return !x.pick || !isCorrect(x.q, x.pick); });
+    var wlHtml = wrong.length ? wrong.map(function (x) {
+      var q = x.q;
+      var you = x.pick ? x.pick.map(function (ci) { return q.c[ci]; }).join(" ／ ") : "未解答";
+      var ans = q.a.map(function (ci) { return q.c[ci]; }).join(" ／ ");
+      return '<div class="wl"><div class="tags"><span class="tag">講義' + q.l + '</span>' + (q.case ? '<span class="tag case">事例' + q.case + '</span>' : '') + '</div>' +
+        '<div class="q">' + esc(q.q) + '</div>' +
+        '<div class="row you"><span>あなた</span><span>' + esc(you) + '</span></div>' +
+        '<div class="row cor"><span>正答</span><span>' + esc(ans) + '</span></div>' +
+        '<div class="ex">' + esc(q.e) + '</div></div>';
+    }).join("") : '<div class="empty">全問正解です。</div>';
+    var r = 46, circ = 2 * Math.PI * r;
+    var ring = '<svg class="ring" viewBox="0 0 108 108" role="img" aria-label="正答率' + pct + '%"><circle cx="54" cy="54" r="' + r + '" fill="none" stroke="var(--line)" stroke-width="10"/>' +
+      '<circle cx="54" cy="54" r="' + r + '" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + (circ * pct / 100) + ' ' + circ + '" transform="rotate(-90 54 54)"/>' +
+      '<text x="54" y="52" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="600" font-size="24" fill="var(--ink)">' + pct + '</text>' +
+      '<text x="54" y="70" text-anchor="middle" font-size="11" fill="var(--muted)">%</text></svg>';
+    var title = S.title, retry = wrong.map(function (x) { return x.q; }), wasMock = S.mock;
+    app.innerHTML =
+      '<div class="qtop"><div class="qtop-row"><button class="back" id="home">← ホーム</button><span class="pos"><span class="ttl">' + esc(title) + ' の結果</span></span><span></span></div></div>' +
+      '<section class="result-hero">' + ring + '<div><h2>' + total + '問中 ' + cor + '問 正解</h2>' +
+        '<div class="sub">解答 ' + answered.length + '問' + (wasMock ? '・所要時間 <span class="num">' + fmt(Math.min(elapsed, MOCK_MIN * 60)) + '</span>' : '') + '</div>' +
+        '<div class="actions" style="justify-content:flex-start">' + (retry.length ? '<button class="btn" id="retry">間違えた' + retry.length + '問を解き直す</button>' : '') + '<button class="btn ghost" id="home2">ホームへ</button></div></div></section>' +
+      '<section class="sec"><div class="sec-head"><h2>講義別の結果</h2></div><div class="lectures breakdown">' + bdHtml + '</div></section>' +
+      '<section class="sec"><div class="sec-head"><h2>間違えた問題と解説</h2><span class="hint">' + wrong.length + '問</span></div><div class="wronglist">' + wlHtml + '</div></section>';
+    S = null;
+    document.getElementById("home").onclick = renderHome;
+    document.getElementById("home2").onclick = renderHome;
+    var rb = document.getElementById("retry"); if (rb) rb.onclick = function () { start("retry", retry); };
+    window.scrollTo(0, 0);
+  }
+
+  // ---------- keyboard ----------
+  document.addEventListener("keydown", function (e) {
+    if (!S || e.metaKey || e.ctrlKey || e.altKey) return;
+    var ord = S.items[S.i].order;
+    if (e.key >= "1" && e.key <= String(ord.length) && !S.shown) { toggle(ord[+e.key - 1]); }
+    else if (e.key === "Enter") {
+      var b = document.getElementById("submit") || document.getElementById("next");
+      if (b && !b.disabled) { e.preventDefault(); b.click(); }
+    }
+  });
+
+  renderHome();
+})();
+</script>
+</body>
+</html>
