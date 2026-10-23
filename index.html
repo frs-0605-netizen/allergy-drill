@@ -172,7 +172,8 @@ button:focus-visible, .choice:focus-visible { outline: 3px solid var(--yolk); ou
 .verdict.ng h3 { color: var(--ng); }
 .verdict .ans { font-size: .88rem; margin: 4px 0 6px; }
 .verdict p { margin: 0; font-size: .9rem; line-height: 1.8; }
-.verdict .src { margin-top: 8px; font-size: .75rem; color: var(--muted); }
+.verdict .src, .wl .src { margin-top: 8px; font-size: .75rem; color: var(--muted); line-height: 1.6; }
+.src .pg { font-family: var(--font-num); font-weight: 600; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; white-space: nowrap; }
 .verdict details summary { cursor: pointer; font-size: .85rem; color: var(--ok); margin-top: 4px; }
 .verdict details p { margin-top: 6px; }
 .verdict .cmp { display: grid; gap: 6px; margin: 8px 0 10px; font-size: .88rem; }
@@ -351,7 +352,7 @@ button:focus-visible, .choice:focus-visible { outline: 3px solid var(--yolk); ou
         '<div class="stat"><div class="k">要復習</div><div class="v">' + o.wrong + '<small>問</small></div></div>' +
       '</div>' + installHtml() +
       '<section class="sec"><div class="sec-head"><h2>演習モード</h2></div><div class="modes">' +
-        '<button class="mode primary" data-mode="mock"><span><span class="t">模擬試験 50問</span><br><span class="d">本番と同じ60分。解説は最後にまとめて表示します。</span></span><span class="go">開始</span></button>' +
+        '<button class="mode primary" data-mode="mock"><span><span class="t">模擬試験 50問</span><br><span class="d">本番と同じ60分。間違えた問題はその場で解説を表示します。</span></span><span class="go">開始</span></button>' +
         '<button class="mode" data-mode="rand"><span class="t">ランダム40問・4択</span><span class="d">全講義から出題。間違えたらその場で解説。</span></button>' +
         '<button class="mode" data-mode="review"' + (o.wrong ? "" : " disabled") + '><span class="t">間違えた問題 ' + o.wrong + '問</span><span class="d">直近で不正解だった問題だけを解き直します。</span></button>' +
         '<button class="mode" data-mode="case"><span class="t">事例問題 ' + caseN + '問</span><span class="d">状況文を読んで答える形式。</span></button>' +
@@ -426,28 +427,22 @@ button:focus-visible, .choice:focus-visible { outline: 3px solid var(--yolk); ou
     if (S.shown) {
       var ok = isCorrect(q, S.sel);
       var ansNos = it.order.map(function (ci, k) { return q.a.indexOf(ci) >= 0 ? (k + 1) : null; }).filter(Boolean).join("・");
-      var src = '<div class="src">出典：講義' + q.l + '「' + esc(L[q.l]) + '」</div>';
-      if (S.four && ok) {
+      if (ok) {
         verdict = '<div class="verdict ok" role="status"><h3>○ 正解</h3>' +
-          '<details><summary>解説を見る</summary><p>' + esc(q.e) + '</p>' + src + '</details></div>';
-      } else if (S.four) {
+          '<details><summary>解説を見る</summary><p>' + esc(q.e) + '</p>' + srcHtml(q) + '</details></div>';
+      } else {
         var yourTxt = S.sel.map(function (ci) { return q.c[ci]; }).join(" ／ ");
         var ansTxt = q.a.map(function (ci) { return q.c[ci]; }).join(" ／ ");
         verdict = '<div class="verdict ng" role="status"><h3>× 不正解</h3>' +
           '<div class="cmp"><div><span>あなたの解答</span><b class="you">' + esc(yourTxt) + '</b></div>' +
           '<div><span>正答(' + ansNos + ')</span><b class="cor">' + esc(ansTxt) + '</b></div></div>' +
-          '<p><strong>解説</strong>　' + esc(q.e) + '</p>' + src + '</div>';
-      } else {
-        verdict = '<div class="verdict ' + (ok ? "ok" : "ng") + '" role="status"><h3>' + (ok ? "○ 正解" : "× 不正解") + '</h3>' +
-          '<div class="ans">正答：' + ansNos + '</div><p>' + esc(q.e) + '</p>' + src + '</div>';
+          '<p><strong>解説</strong>　' + esc(q.e) + '</p>' + srcHtml(q) + '</div>';
       }
     }
     var last = S.i === n - 1;
-    var btn = S.mock
-      ? '<button class="btn" id="next"' + (S.sel.length === need ? "" : " disabled") + '>' + (last ? "解答を終了して採点" : "次へ") + '</button>'
-      : (S.shown
-        ? '<button class="btn" id="next">' + (last ? "結果を見る" : "次の問題") + '</button>'
-        : '<button class="btn" id="submit"' + (S.sel.length === need ? "" : " disabled") + '>解答する</button>');
+    var btn = S.shown
+      ? '<button class="btn" id="next">' + (last ? (S.mock ? "採点する" : "結果を見る") : (S.mock ? "次へ" : "次の問題")) + '</button>'
+      : '<button class="btn" id="submit"' + (S.sel.length === need ? "" : " disabled") + '>' + (S.mock && last ? "解答して採点" : "解答する") + '</button>';
     app.innerHTML =
       '<div class="qtop"><div class="qtop-row"><button class="back" id="quit">← ' + (S.mock ? "中断" : "ホーム") + '</button>' +
       '<span class="pos"><span class="ttl">' + esc(S.title) + '</span><span class="cnt"><b>' + (S.i + 1) + '</b> / ' + n + '</span></span>' +
@@ -466,6 +461,12 @@ button:focus-visible, .choice:focus-visible { outline: 3px solid var(--yolk); ou
       if (S.mock && S.items.some(function (x) { return x.pick; })) { finish(); } else { renderHome(); window.scrollTo(0, 0); }
     };
   }
+  function srcHtml(q) {
+    // q.p = "講義番号-PDFのページ番号"。問題の講義と別の講義資料が出典のこともある
+    var p = (q.p || "").split("-"), lec = +p[0] || q.l, page = p[1];
+    return '<div class="src">出典：講義' + lec + '資料「' + esc((window.SOURCES || {})[lec] || L[lec]) + '」' +
+      (page ? ' <b class="pg">p.' + page + '</b>' : '') + '</div>';
+  }
   function isCorrect(q, sel) { return sel.length === q.a.length && q.a.every(function (a) { return sel.indexOf(a) >= 0; }); }
   function toggle(ci) {
     if (S.shown) return;
@@ -478,16 +479,15 @@ button:focus-visible, .choice:focus-visible { outline: 3px solid var(--yolk); ou
   function submit() {
     var it = S.items[S.i], need = it.q.t === "d" ? 2 : 1;
     if (S.sel.length !== need) return;
-    it.pick = S.sel.slice(); S.shown = true;
-    record(it.q, isCorrect(it.q, it.pick));
+    it.pick = S.sel.slice();
+    var ok = isCorrect(it.q, it.pick);
+    record(it.q, ok);
+    // 模擬試験は正解ならそのまま次へ、不正解ならその場で解説を表示する
+    if (S.mock && ok) { next(); return; }
+    S.shown = true;
     renderQuiz();
   }
   function next() {
-    var it = S.items[S.i];
-    if (S.mock) {
-      var need = it.q.t === "d" ? 2 : 1; if (S.sel.length !== need) return;
-      it.pick = S.sel.slice(); record(it.q, isCorrect(it.q, it.pick));
-    }
     if (S.i === S.items.length - 1) { finish(); return; }
     S.i++; S.sel = []; S.shown = false; renderQuiz(); window.scrollTo(0, 0);
   }
@@ -515,7 +515,7 @@ button:focus-visible, .choice:focus-visible { outline: 3px solid var(--yolk); ou
         '<div class="q">' + esc(q.q) + '</div>' +
         '<div class="row you"><span>あなた</span><span>' + esc(you) + '</span></div>' +
         '<div class="row cor"><span>正答</span><span>' + esc(ans) + '</span></div>' +
-        '<div class="ex">' + esc(q.e) + '</div></div>';
+        '<div class="ex">' + esc(q.e) + '</div>' + srcHtml(q) + '</div>';
     }).join("") : '<div class="empty">全問正解です。</div>';
     var r = 46, circ = 2 * Math.PI * r;
     var ring = '<svg class="ring" viewBox="0 0 108 108" role="img" aria-label="正答率' + pct + '%"><circle cx="54" cy="54" r="' + r + '" fill="none" stroke="var(--line)" stroke-width="10"/>' +

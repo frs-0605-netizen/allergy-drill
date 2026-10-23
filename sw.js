@@ -1,7 +1,7 @@
 // Service worker for 食物アレルギー認定ドリル
 // App files: network first (so question updates arrive), falling back to cache when offline.
 // Google Fonts: cache first, since they never change at a given URL.
-const VERSION = "811fe353e2c1";
+const VERSION = "c891f40613f7";
 const APP_CACHE = "fa-drill-app-" + VERSION;
 const FONT_CACHE = "fa-drill-fonts-v1";
 const APP_FILES = [
